@@ -1,5 +1,5 @@
 {
-    "name": "thebooks",
+    "name": "theboooks",
     "version": "1.0.0",
     "description": "Official website of The Books",
     "main": "server.js",
