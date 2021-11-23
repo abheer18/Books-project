@@ -417,8 +417,8 @@ footer .column i + i {
   border-radius: 20px;
   padding-left: 22px;
   padding-right: 22px;
-  color: #1a1a1a;
-  background-color: aliceblue;
+  color: #000000;
+  background-color: rgb(193, 226, 255);
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
    margin: 50px;
 }
