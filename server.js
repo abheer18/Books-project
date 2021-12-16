@@ -1,62 +1,90 @@
-require('dotenv').config()
+require("dotenv").config(".env");
+const { response } = require("express");
 const express = require("express");
 const app = express();
-const port = process.env.PORT || 3000;   //edited this port
-// const port = process.env.USER || 8080;
-// const port = process.env.PASSWORD || 8080;
+const port = process.env.PORT || 3000; //edited this port
+
 const user = process.env.USER;
 const pass = process.env.PASS;
-
 
 const nodemailer = require("nodemailer");
 
 app.use(express.static("public"));
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 
-app.post("/send", (req, res) => {
+const connection = require("./database/db");
+
+connection.connect((err) => {
+  if (err) throw err;
+  console.log("Database connected");
+});
+app.get("/form", (req, res) => {
+  res.status(200).sendFile('public/form.html', { root:__dirname
+  })
+})
+app.post("/thank", (req, res) => {
   let transporter = nodemailer.createTransport({
     service: "gmail",
-    port: 587,
-    secure: false,
     auth: {
       user: user,
       pass: pass,
     },
-    tls: {
-      rejectUnauthorized: false,
-    },
   });
+  var x = req.body;
+  // console.log(req.body);
+  const SQL =
+    "INSERT INTO `feedback` SET `NAME`=?, `EMAILID`=?, `SUBJECT`=?, `MESSAGE`=? ";
 
-  let mailOptions = {
-    from: user,
-    to: req.body.email,
-    subject: req.body.subject,
-    text: `name: ${req.body.name}
-email: ${req.body.email}
-message: ${req.body.message}
-    `,
-  };
+  const query = connection.query(
+    SQL,
+    [x.NAME, x.EMAILID, x.SUBJECT, x.MESSAGE],
+    (err, output) => {
+      if (err) {
+        // throw err;
+        console.log(err.message);
+      } else {
+        // res.status(200).json({
+        //   dbMessage: "Query Run successfully",
+        // });
+        res.status(200).sendFile('public/thank.html', { root:__dirname
+})
 
-  /*
-  `name: ${req.body.name}
-    email: ${req.body.email}
-    message: ${req.body.message}
-    `,
-  */
+        let mailOptions = {
+          from: user,
+          to: req.body.EMAILID,
+          subject: req.body.SUBJECT,
+          text: `name: ${req.body.NAME} 
+          email: ${req.body.EMAILID} 
+          message: ${req.body.MESSAGE}
+          `,
+        };
 
-  transporter.sendMail(mailOptions, function (error, info) {
-    if (error) {
-      console.log(error);
-    } else {
-      console.log("Email sent: " + info.response);
+        /*
+        `name: ${req.body.name}
+          email: ${req.body.email}
+          message: ${req.body.message}
+          `,
+        */
+
+        transporter.sendMail(mailOptions, (error, info) => {
+          if (error) {
+            console.log(error);
+          } else {
+            console.log("Email sent: " + info.response);
+            // res.status(200).json({
+            //   emailMessage: `message send ${JSON.stringify(req.body)}`,
+            // });
+          }
+        });
+      }
     }
-  });
-
-  res.send(`message send ${JSON.stringify(req.body)}`);
+  );
 });
 
 app.listen(port, () => {
-  console.log(`App running on port ${port}`);
+  console.log(`App running on http://localhost:${port}`);
 });
+
+// NAME, EMAILID, SUBJECT ,MESSAGE

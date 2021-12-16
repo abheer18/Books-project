@@ -22,47 +22,63 @@
             <div class="section-title">
               <p class="paragraph">Any comments or feedback? Thank you.</p>
               <hr />
-              <form id="contact-form" method="POST" action="/send">
+              <form id="contact-form" method="POST" action="/thank">
                 <div class="form-group">
                   <div class="row">
                     <div class="col-md-6">
                       <input
                         placeholder="Name"
-                        id="name"
-                        name="name"
+                        id="NAME"
+                        name="NAME"
                         type="text"
                         class="form-control"
                         required
                       />
                     </div>
                     <div class="col-md-6">
-                      <input
+                      <!-- <input
                         placeholder="Email"
-                        id="email"
+                        id="EMAILID"
                         type="email"
-                        name="email"
+                        name="EMAILID"
                         class="form-control"
                         aria-describedby="emailHelp"
                         required
-                      />
+                      /> -->
+
+                      <div class="input-group has-validation">
+                        <input
+                          placeholder="Email"
+                          class="form-control"
+                          id="EMAILID"
+                          type="email"
+                          name="EMAILID"
+                          required
+                        />
+                        <div class="invalid-feedback">
+                          Please choose a valid email
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
                 <div class="form-group">
-                  <input
-                    placeholder="Subject"
-                    id="subject"
-                    name="subject"
-                    type="text"
-                    class="form-control"
-                    required
-                  />
+                  <div class="input-group has-validation">
+                    <input
+                      placeholder="Subject"
+                      id="SUBJECT"
+                      name="SUBJECT"
+                      type="text"
+                      class="form-control"
+                      required
+                    />
+                  </div>
                 </div>
                 <div class="form-group">
                   <textarea
                     placeholder="Message"
-                    id="message"
-                    name="message"
+                    id="MESSAGE"
+                    name="MESSAGE"
                     class="form-control"
                     rows="3"
                     required
